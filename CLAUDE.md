@@ -79,12 +79,25 @@ PracticeProject/
 
 `auth.json` está en `.gitignore` — nunca commitear tokens de sesión.
 
-## Posibles extensiones futuras
+## Roadmap
 
-- **API tests**: requests HTTP con `APIRequestContext` de Playwright
-- **Cross-browser**: descomentar Firefox y WebKit en `playwright.config.ts`
-- **Visual regression**: capturas de pantalla de referencia con `toHaveScreenshot()`
-- **performance_glitch_user**: verificar tiempos de respuesta con ese usuario
+### Nivel 1 — Playwright intermedio
+- **Tags y anotaciones**: `test.skip`, `test.fixme`, `test.slow`, `test.fail`
+- **Tests parametrizados**: `for...of` sobre datasets — un test que corre con múltiples inputs
+- **`performance_glitch_user`**: mismo patrón que Problem User, con timeouts extendidos
+- **Precio total en checkout**: verificar que el total sea la suma correcta de los productos
+
+### Nivel 2 — Playwright avanzado
+- **Network interception**: `page.route()` para mockear respuestas o simular errores de red
+- **API testing**: `request.get/post()` con `APIRequestContext`
+- **Mobile viewports**: `devices['iPhone 13']` en el config
+- **Visual regression**: `toHaveScreenshot()` — capturas de referencia y comparación pixel a pixel
+
+### Nivel 3 — Infraestructura real (prioridad para portfolio)
+- **GitHub Actions**: workflow de CI que corre el suite en cada push/PR ⭐
+- **Cross-browser**: descomentar Firefox y WebKit — detectar diferencias entre browsers ⭐
+- **Allure reporter**: reporte con historial de runs
+- **Accesibilidad**: `@axe-core/playwright` — auditoría a11y integrada en los tests
 
 ## Tipos de tests
 

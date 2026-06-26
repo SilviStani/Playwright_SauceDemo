@@ -96,6 +96,35 @@ PracticeProject/
 
 > `auth.json` está en `.gitignore`. Nunca commitear tokens de sesión.
 
+## CI — GitHub Actions
+
+El suite corre automáticamente en cada `push` y `pull request` a `main` usando GitHub Actions.
+
+El workflow está en [.github/workflows/playwright.yml](.github/workflows/playwright.yml) e incluye:
+- Instalación de dependencias con `npm ci`
+- Instalación de Chromium con sus dependencias del sistema
+- Ejecución completa del suite
+- Subida del reporte HTML como artefacto descargable (disponible 30 días)
+
+### Configurar en un repo nuevo
+
+Las credenciales se cargan como Secrets en GitHub — **nunca en el código**:
+
+```
+Repositorio → Settings → Secrets and variables → Actions → New repository secret
+```
+
+| Secret | Valor |
+|---|---|
+| `STANDARD_USER` | `standard_user` |
+| `LOCKED_OUT_USER` | `locked_out_user` |
+| `PROBLEM_USER` | `problem_user` |
+| `PERFORMANCE_GLITCH_USER` | `performance_glitch_user` |
+| `PASSWORD` | `secret_sauce` |
+| `BASE_URL` | `https://www.saucedemo.com` |
+
+Con los Secrets cargados, el primer `push` dispara el workflow automáticamente.
+
 ## Convenciones
 
 - `getByRole()`, `getByLabel()`, `getByText()` sobre selectores CSS cuando sea posible

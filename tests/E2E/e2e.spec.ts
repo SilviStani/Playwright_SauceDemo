@@ -2,6 +2,8 @@ import { test, expect } from '../../fixtures';
 
 test.describe('E2E', () => {
 
+    test.use({ storageState: { cookies: [], origins: [] } });
+
     test('flujo completo: login, agregar productos, checkout y confirmacion', async ({
         loginPage,
         inventoryPage,

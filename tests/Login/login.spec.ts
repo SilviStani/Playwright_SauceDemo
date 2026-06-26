@@ -2,6 +2,8 @@ import { test, expect } from '../../fixtures';
 
 test.describe('Login', () => {
 
+    test.use({ storageState: { cookies: [], origins: [] } });
+
     test('login exitoso redirige a inventario', async ({ loginPage }) => {
         await loginPage.navigate();
         await loginPage.login(

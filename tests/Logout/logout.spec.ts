@@ -2,12 +2,8 @@ import { test, expect } from '../../fixtures';
 
 test.describe('Logout', () => {
 
-    test.beforeEach(async ({ loginPage }) => {
-        await loginPage.navigate();
-        await loginPage.login(
-            process.env.STANDARD_USER!,
-            process.env.PASSWORD!
-        );
+    test.beforeEach(async ({ inventoryPage }) => {
+        await inventoryPage.navigate();
     });
 
     test('logout redirige a la pagina de login', async ({ inventoryPage }) => {

@@ -18,6 +18,10 @@ export class InventoryPage extends BasePage {
         return this.page.locator('.shopping_cart_badge');
     }
 
+    async navigate(): Promise<void> {
+        await super.navigate('/inventory.html');
+    }
+
     async getPageTitle(): Promise<string> {
         await this.waitForElement(this.pageTitle);
         return this.pageTitle.innerText();
@@ -57,8 +61,16 @@ export class InventoryPage extends BasePage {
         return this.productItems.first().locator('.inventory_item_price').innerText();
     }
 
-    async logout(): Promise<void> {
-        await this.page.locator('#react-burger-menu-btn').click();
-        await this.page.getByRole('link', { name: 'Logout' }).click();
+    async goToProductDetail(productName: string): Promise<void> {
+        const item = this.productItems.filter({ hasText: productName });
+        await item.locator('.inventory_item_name').click();
     }
+
+    async getProductImageSrcs(): Promise<(string | null)[]> {
+        return this.productItems.locator('img').evaluateAll(
+            (imgs: HTMLImageElement[]) => imgs.map(img => img.getAttribute('src'))
+        );
+    }
+
+
 }

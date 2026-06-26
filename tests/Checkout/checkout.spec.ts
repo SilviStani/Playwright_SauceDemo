@@ -2,12 +2,8 @@ import { test, expect } from '../../fixtures';
 
 test.describe('Checkout', () => {
 
-    test.beforeEach(async ({ loginPage, inventoryPage, cartPage }) => {
-        await loginPage.navigate();
-        await loginPage.login(
-            process.env.STANDARD_USER!,
-            process.env.PASSWORD!
-        );
+    test.beforeEach(async ({ inventoryPage, cartPage }) => {
+        await inventoryPage.navigate();
         await inventoryPage.addToCart('Sauce Labs Backpack');
         await inventoryPage.goToCart();
         await cartPage.proceedToCheckout();

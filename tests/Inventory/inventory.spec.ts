@@ -2,12 +2,8 @@ import { test, expect } from '../../fixtures';
 
 test.describe('Inventory', () => {
 
-    test.beforeEach(async ({ loginPage }) => {
-        await loginPage.navigate();
-        await loginPage.login(
-            process.env.STANDARD_USER!,
-            process.env.PASSWORD!
-        );
+    test.beforeEach(async ({ inventoryPage }) => {
+        await inventoryPage.navigate();
     });
 
     test('la pagina de inventario muestra el titulo Products', async ({ inventoryPage }) => {

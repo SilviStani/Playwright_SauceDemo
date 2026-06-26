@@ -17,57 +17,73 @@ Proyecto de práctica de automatización de tests con Playwright y TypeScript. S
 PracticeProject/
 ├── pages/
 │   ├── Base/
-│   │   └── BasePage.ts         # Clase base: page, navigate(), getTitle(), waitForElement()
+│   │   └── BasePage.ts              # navigate(), getTitle(), waitForElement(), openMenu(), logout()
 │   ├── Login/
-│   │   └── LoginPage.ts        # login(), getErrorMessage(), closeErrorMessage(), isErrorVisible()
+│   │   └── LoginPage.ts             # login(), getErrorMessage(), closeErrorMessage(), isErrorVisible()
 │   ├── Inventory/
-│   │   └── InventoryPage.ts    # getPageTitle(), getProductCount(), getProductNames(),
-│   │                           # addToCart(), getCartCount(), goToCart(),
-│   │                           # sortBy(), getFirstProductName(), getFirstProductPrice(), logout()
+│   │   └── InventoryPage.ts         # navigate(), getPageTitle(), getProductCount(), getProductNames(),
+│   │                                # addToCart(), getCartCount(), goToCart(), sortBy(),
+│   │                                # getFirstProductName(), getFirstProductPrice(),
+│   │                                # goToProductDetail(), getProductImageSrcs()
+│   ├── ProductDetail/
+│   │   └── ProductDetailPage.ts     # getProductName(), getProductPrice(), getProductDescription(),
+│   │                                # addToCart(), goBack()
 │   ├── Cart/
-│   │   └── CartPage.ts         # getCartItemCount(), getItemNames(), removeItem(),
-│   │                           # proceedToCheckout(), continueShopping(), isCartBadgeVisible()
+│   │   └── CartPage.ts              # getCartItemCount(), getItemNames(), removeItem(),
+│   │                                # proceedToCheckout(), continueShopping(), isCartBadgeVisible()
 │   └── Checkout/
-│       └── CheckoutPage.ts     # fillShippingInfo(), continue(), cancel(), getErrorMessage(),
-│                               # getSummaryItemNames(), getOrderTotal(), finish(), getConfirmationMessage()
+│       └── CheckoutPage.ts          # fillShippingInfo(), continue(), cancel(), getErrorMessage(),
+│                                    # getSummaryItemNames(), getOrderTotal(), finish(), getConfirmationMessage()
 ├── tests/
 │   ├── Login/
-│   │   └── login.spec.ts       # 6 tests ✅
+│   │   └── login.spec.ts            # 6 tests ✅
 │   ├── Inventory/
-│   │   └── inventory.spec.ts   # 6 tests ✅
+│   │   └── inventory.spec.ts        # 6 tests ✅
+│   ├── ProductDetail/
+│   │   └── product-detail.spec.ts   # 5 tests ✅
 │   ├── Cart/
-│   │   └── cart.spec.ts        # 6 tests ✅
+│   │   └── cart.spec.ts             # 6 tests ✅
 │   ├── Checkout/
-│   │   └── checkout.spec.ts    # 5 tests ✅
+│   │   └── checkout.spec.ts         # 5 tests ✅
 │   ├── Logout/
-│   │   └── logout.spec.ts      # 2 tests ✅
+│   │   └── logout.spec.ts           # 2 tests ✅
+│   ├── ProblemUser/
+│   │   └── problem-user.spec.ts     # 3 tests ✅
 │   └── E2E/
-│       └── e2e.spec.ts         # 1 test ✅
-├── fixtures.ts                 # loginPage, inventoryPage, cartPage, checkoutPage
+│       └── e2e.spec.ts              # 1 test ✅
+├── fixtures.ts                      # loginPage, inventoryPage, productDetailPage, cartPage, checkoutPage
+├── global-setup.ts                  # Login único → guarda sesión en auth.json
 ├── playwright.config.ts
 ├── tsconfig.json
-├── .env                        # Credenciales (NO commitear)
-├── .env.example                # Plantilla vacía (sí commitear)
+├── .env                             # Credenciales (NO commitear)
+├── .env.example                     # Plantilla vacía (sí commitear)
 └── CLAUDE.md
 ```
 
-## Estado actual — 26 tests pasando en Chromium
+## Estado actual — 34 tests pasando en Chromium
 
 | Área | Tests cubiertos |
 |---|---|
 | **Login** | login exitoso, usuario bloqueado, campos vacíos, password incorrecto, username vacío con password, cerrar mensaje de error |
 | **Inventory** | título "Products", 6 productos visibles, badge al agregar, ordenar Z→A, precio low→high, precio high→low |
+| **Product Detail** | navegar al detalle, nombre correcto, precio correcto, agregar al carrito, volver al inventario |
 | **Cart** | producto aparece, eliminar item, continuar comprando, badge desaparece al eliminar, múltiples productos aparecen, badge refleja cantidad correcta |
 | **Checkout** | formulario avanza, resumen correcto, confirmación final, formulario vacío da error, cancelar vuelve al carrito |
 | **Logout** | logout redirige al login, campo de usuario visible tras logout |
+| **Problem User** | imágenes rotas (todas iguales), sort sin efecto, last name no acepta input en checkout |
 | **E2E** | flujo completo: login → 2 productos → carrito → checkout → confirmación |
+
+## storageState
+
+`global-setup.ts` hace login una vez antes de todo el suite y guarda la sesión en `auth.json`. Los tests reutilizan esa sesión excepto Login, Problem User y E2E, que usan `test.use({ storageState: { cookies: [], origins: [] } })` para arrancar desde cero.
+
+`auth.json` está en `.gitignore` — nunca commitear tokens de sesión.
 
 ## Posibles extensiones futuras
 
 - **API tests**: requests HTTP con `APIRequestContext` de Playwright
 - **Cross-browser**: descomentar Firefox y WebKit en `playwright.config.ts`
 - **Visual regression**: capturas de pantalla de referencia con `toHaveScreenshot()`
-- **problem_user**: verificar comportamientos rotos con ese usuario
 - **performance_glitch_user**: verificar tiempos de respuesta con ese usuario
 
 ## Tipos de tests
@@ -80,7 +96,7 @@ PracticeProject/
 
 Cada página tiene su carpeta en `pages/<Nombre>/` con su Page Object, y sus tests en `tests/<Nombre>/`.
 Todos los Page Objects extienden `BasePage` e importan desde rutas relativas con `../Base/BasePage`.
-El método `logout()` vive en `InventoryPage` porque el menú burger solo está disponible estando logueado.
+El método `logout()` vive en `BasePage` porque el menú burger está disponible en cualquier página estando logueado.
 
 ## fixtures.ts
 

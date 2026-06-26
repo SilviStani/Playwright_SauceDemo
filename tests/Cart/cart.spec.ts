@@ -4,12 +4,8 @@ test.describe('Cart', () => {
 
     test.describe('con un producto', () => {
 
-        test.beforeEach(async ({ loginPage, inventoryPage }) => {
-            await loginPage.navigate();
-            await loginPage.login(
-                process.env.STANDARD_USER!,
-                process.env.PASSWORD!
-            );
+        test.beforeEach(async ({ inventoryPage }) => {
+            await inventoryPage.navigate();
             await inventoryPage.addToCart('Sauce Labs Backpack');
             await inventoryPage.goToCart();
         });
@@ -40,12 +36,8 @@ test.describe('Cart', () => {
 
     test.describe('con multiples productos', () => {
 
-        test.beforeEach(async ({ loginPage, inventoryPage }) => {
-            await loginPage.navigate();
-            await loginPage.login(
-                process.env.STANDARD_USER!,
-                process.env.PASSWORD!
-            );
+        test.beforeEach(async ({ inventoryPage }) => {
+            await inventoryPage.navigate();
             await inventoryPage.addToCart('Sauce Labs Backpack');
             await inventoryPage.addToCart('Sauce Labs Bike Light');
             await inventoryPage.goToCart();
